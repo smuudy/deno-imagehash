@@ -5,7 +5,7 @@
 ## Usage
 
 ```javascript
-import { imageHash, jpeg } from "https://deno.land/x/deno_imagehash/mod.ts";
+import { imageHash, jpeg } from "https://deno.land/x/imagehash/mod.ts";
 
 serve(async (request: Request) => {
     const rawImageData: Uint8Array = request.body
@@ -42,6 +42,8 @@ Type: `number` / Default: 10
 The number of bits to use for the hash. The higher the number, the more accurate the hash, but
 the longer it will take to compute.
 
+## hammingDistance(hash1, hash2)
+Calculate distance in bits between two hashes.
 
 ## Credits
 
