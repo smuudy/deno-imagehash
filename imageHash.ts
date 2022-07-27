@@ -2,8 +2,8 @@
 // Block Mean Value Based Image Perceptual Hashing by Bian Yang, Fan Gu and Xiamu Niu
 //
 // Updated and deno-ified version of blockhash.js (https://github.com/commonsmachinery/blockhash-js)
-import jpeg from "./deps"
-import {mimeType} from "./mime-type";
+import jpeg from "./deps.ts"
+import {mimeType} from "./mime-type.ts";
 
 var one_bits = [0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4];
 
