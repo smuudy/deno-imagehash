@@ -111,7 +111,7 @@ function hashFromImage(data, bits) {
     var even_y = data.height % bits === 0;
 
     if (even_x && even_y) {
-        return bmvbhash_even(data, bits);
+        return _fromEvenImage(data, bits);
     }
 
     // initialize blocks array with 0s
