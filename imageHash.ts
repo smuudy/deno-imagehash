@@ -3,7 +3,7 @@
 //
 // Updated and deno-ified version of blockhash.js (https://github.com/commonsmachinery/blockhash-js)
 export * as jpeg from "./deps.ts"
-import {mimeType} from "./mime-type";
+import {mimeType} from "./mime-type.ts";
 
 var one_bits = [0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4];
 
