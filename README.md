@@ -5,16 +5,16 @@
 ## Usage
 
 ```javascript
-import { imageHash, jpeg } from "https://deno.land/x/imagehash/mod.ts";
+import { imageHash, jpeg, DecodedImage } from "https://deno.land/x/imagehash/mod.ts";
 
 serve(async (request: Request) => {
     const rawImageData: Uint8Array = request.body
-    const hash = await imageHash(rawImageData, 10);
+    const hash: String = await imageHash(rawImageData, 10);
     
     // OR
     
-    const decodedImage = jpeg.decode(rawImageData)
-    const hash = await imageHash(decodedImage, 10);
+    const decodedImage: DecodedImage = jpeg.decode(rawImageData)  // decodedImage = { width: 100, height: 100, data: ... }
+    const hash: String = await imageHash(decodedImage, 10);
     
     return new Response(JSON.stringify({hash}), {status: 200})
 
@@ -28,11 +28,9 @@ Returns: `string`
 Returns the hash value as a string of hexadecimal characters.
 
 ### imgData 
-Type: `Uint8Array` or `jpeg.Image`
+Type: `Uint8Array` or `DecodedImage`/`jpeg.Image`
 
-The image data to hash. This can be a `Uint8Array` or a `jpeg.Image` object.
-
->    The return value of `jpeg.decode()` is a `jpeg.Image` object
+The image data to hash. This can be a `Uint8Array` or an object that matches `DecodedImage`: ```{data: `Uint8Array`, width: `number`, height: `number`})```
 
 ### bits = 10 
 #### (Optional)

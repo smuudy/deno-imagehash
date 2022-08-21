@@ -1,1 +1,1 @@
-export { imageHash, hammingDistance, jpeg } from "./imageHash.ts";
+export { imageHash, hammingDistance, jpeg, DecodedImage } from "./imageHash.ts";

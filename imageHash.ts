@@ -3,7 +3,7 @@
 //
 // Updated and deno-ified version of blockhash.js (https://github.com/commonsmachinery/blockhash-js)
 export * as jpeg from "./deps.ts"
-import {mimeType} from "./mime-type.ts";
+import {mimeType} from "./mime-type";
 
 var one_bits = [0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4];
 
@@ -23,16 +23,16 @@ export function hammingDistance(hash1: string, hash2: string) {
     return d;
 }
 
-function median(data) {
+function median(data: any) {
     var mdarr = data.slice(0);
-    mdarr.sort(function(a, b) { return a-b; });
+    mdarr.sort(function(a: number, b: number) { return a-b; });
     if (mdarr.length % 2 === 0) {
         return (mdarr[mdarr.length/2] + mdarr[mdarr.length/2 + 1]) / 2.0;
     }
     return mdarr[Math.floor(mdarr.length/2)];
 }
 
-function translate_blocks_to_bits(blocks, pixels_per_block) {
+function translate_blocks_to_bits(blocks: any, pixels_per_block: number) {
     var half_block_value = pixels_per_block * 256 * 3 / 2;
     var bandsize = blocks.length / 4;
 
@@ -53,17 +53,17 @@ function translate_blocks_to_bits(blocks, pixels_per_block) {
     }
 }
 
-function bits_to_hexhash(bitsArray) {
+function bits_to_hexhash(bitsArray: any) {
     var hex = [];
     for (var i = 0; i < bitsArray.length; i += 4) {
-        var nibble = bitsArray.slice(i, i + 4);
+        var nibble: any = bitsArray.slice(i, i + 4);
         hex.push(parseInt(nibble.join(''), 2).toString(16));
     }
 
     return hex.join('');
 }
 
-function _fromEvenImage(data, bits) {
+function _fromEvenImage(data: { width: number; height: number; data: any[]; }, bits: number) {
     var blocksize_x = Math.floor(data.width / bits);
     var blocksize_y = Math.floor(data.height / bits);
 
@@ -96,8 +96,10 @@ function _fromEvenImage(data, bits) {
     return bits_to_hexhash(result);
 }
 
-function hashFromImage(data, bits) {
-    var result = [];
+export type DecodedImage = { width: any; height: any; data: any; };
+
+function hashFromImage(data: DecodedImage, bits: number) {
+    var result: any[] = [];
 
     var i, j, x, y;
     var block_width, block_height;
@@ -105,7 +107,7 @@ function hashFromImage(data, bits) {
     var block_top, block_bottom, block_left, block_right;
     var y_mod, y_frac, y_int;
     var x_mod, x_frac, x_int;
-    var blocks = [];
+    var blocks: any = [];
 
     var even_x = data.width % bits === 0;
     var even_y = data.height % bits === 0;
@@ -199,20 +201,20 @@ function hashFromImage(data, bits) {
 
 /**
  * It takes an image and returns a hash
- * @param {Uint8Array | jpeg.Image} srcImageData - The image data to hash. This can be a Uint8Array or a jpeg.Image object.
+ * @param {Uint8Array} srcImageData - The image data to hash. This can be a Uint8Array or a Image object.
  * @param {number} bits - The number of bits to use for the hash. The higher the number, the more accurate the hash, but
  * the longer it will take to compute. (Default is 10)
  * @returns A string of hexadecimal characters.
  */
-export function imageHash(srcImageData: Uint8Array | jpeg.Image, bits?: number = 10): string {
+export function imageHash(srcImageData: Uint8Array | DecodedImage, bits: number = 10): string {
     try {
         const mime = mimeType(srcImageData);
         if (mime !== 'image/jpeg') throw new Error("Unsupported image type");
-        const imgData = (srcImageData instanceof jpeg.Image) ? srcImageData : jpeg.decode(srcImageData);
+        const imgData = (srcImageData instanceof Uint8Array) ? jpeg.decode(srcImageData) : srcImageData;
         if (!imgData) throw new Error("Couldn't decode image");
 
         return hashFromImage(imgData, bits);
     } catch (err) {
-        throw new Error(err);
+        throw err;
     }
 }
