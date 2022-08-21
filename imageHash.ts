@@ -2,7 +2,7 @@
 // Block Mean Value Based Image Perceptual Hashing by Bian Yang, Fan Gu and Xiamu Niu
 //
 // Updated and deno-ified version of blockhash.js (https://github.com/commonsmachinery/blockhash-js)
-export * as jpeg from "./deps.ts"
+import {decode} from "https://deno.land/x/jpegts@1.1/mod.ts";
 import {mimeType} from "./mime-type.ts";
 
 var one_bits = [0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4];
@@ -201,7 +201,7 @@ function hashFromImage(data: DecodedImage, bits: number) {
 
 /**
  * It takes an image and returns a hash
- * @param {Uint8Array} srcImageData - The image data to hash. This can be a Uint8Array or a Image object.
+ * @param {Uint8Array | DecodedImage} srcImageData - The image data to hash. This can be a Uint8Array or a DecodedImage type.
  * @param {number} bits - The number of bits to use for the hash. The higher the number, the more accurate the hash, but
  * the longer it will take to compute. (Default is 10)
  * @returns A string of hexadecimal characters.
@@ -210,7 +210,7 @@ export function imageHash(srcImageData: Uint8Array | DecodedImage, bits: number 
     try {
         const mime = mimeType(srcImageData);
         if (mime !== 'image/jpeg') throw new Error("Unsupported image type");
-        const imgData = (srcImageData instanceof Uint8Array) ? jpeg.decode(srcImageData) : srcImageData;
+        const imgData = (srcImageData instanceof Uint8Array) ? decode(srcImageData) : srcImageData;
         if (!imgData) throw new Error("Couldn't decode image");
 
         return hashFromImage(imgData, bits);

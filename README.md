@@ -5,7 +5,7 @@
 ## Usage
 
 ```javascript
-import { imageHash, jpeg, DecodedImage } from "https://deno.land/x/imagehash/mod.ts";
+import { imageHash, hammingDistance, DecodedImage } from "https://deno.land/x/imagehash/mod.ts";
 
 serve(async (request: Request) => {
     const rawImageData: Uint8Array = request.body
@@ -16,7 +16,10 @@ serve(async (request: Request) => {
     const decodedImage: DecodedImage = jpeg.decode(rawImageData)  // decodedImage = { width: 100, height: 100, data: ... }
     const hash: String = await imageHash(decodedImage, 10);
     
-    return new Response(JSON.stringify({hash}), {status: 200})
+    // Hamming Distance
+    const bitDifference = hammingDistance(hash1, hash2); // returns number
+    
+    return new Response(JSON.stringify({hash, bitDifference}), {status: 200})
 
 ```
 
